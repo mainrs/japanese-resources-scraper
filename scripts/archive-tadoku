@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#
+# @depends-on: conda, python3
+
+env_exists() {
+  conda env list | grep "${@}" >/dev/null 2>/dev/null
+}
+
+if ! env_exists "japanese_resources_scraper"; then
+    conda env create -f environment.yml
+fi
+
+eval "$(conda shell.bash hook)"
+conda activate japanese_resources_scraper
+python3 scripts/archive_tadoku.py "$1"
